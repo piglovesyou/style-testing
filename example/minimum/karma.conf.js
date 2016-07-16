@@ -5,7 +5,7 @@ module.exports = function(config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '',
+        basePath: __dirname,
 
 
         // frameworks to use
@@ -19,7 +19,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             'components/**/*.js',
-            'components/**/*.html',
+            // 'components/**/*.html',
             {pattern: '**/*.css', included: false},
             'components/**/*.less',
         ],
@@ -33,7 +33,7 @@ module.exports = function(config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'components/**/*.js': ['browserify'],
-            'components/**/*.html': ['html2js'],
+            // 'components/**/*.html': ['html2js'],
             'components/**/*.less': ['less'],
         },
 
@@ -41,8 +41,11 @@ module.exports = function(config) {
             debug: true,
             transform: [
                 ['babelify', {
-                  plugins: [
-                    "transform-async-to-generator"
+                  'plugins': [
+                    // Pass module directly because somehow babel tries to
+                    // find plugings fron style-testing/node_modules.
+                    require('babel-plugin-transform-async-to-generator'),
+                    require('babel-plugin-transform-es2015-modules-commonjs')
                   ]
                 }]
             ]

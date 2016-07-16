@@ -1,6 +1,5 @@
-const assert = require('assert');
-const StyleTest = require('../../..');
-const {computedStyleOf} = StyleTest;
+import assert from 'assert';
+import {render, renderWithCSS, createContext, computedStyleOf} from '../../..';
 
 describe('sample component', () => {
   let ctx;
@@ -9,8 +8,25 @@ describe('sample component', () => {
     ctx && ctx.clean();
   });
 
-  it('Style of .spec.html must be the same as one using external stylesheet', async () => {
-    ctx = StyleTest.createContext({ rootSelector: '.sample' });
+  it('Style must be the same as expected', async () => {
+    const expectedRootElement = render(`
+      <div class="sample" style="
+        border: 4px pink solid;
+        padding: 8px;
+        font-weight: bold;
+        ">baa</div>
+      `, {rootSelector: '.sample'});
+
+    const actualRootElement = await renderWithCSS(
+        '<div class="sample">baa</div>', ['base/components/sample.compiled.css'],
+        {rootSelector: '.sample'});
+
+    assert.deepEqual(computedStyleOf(expectedRootElement),
+        computedStyleOf(actualRootElement));
+  });
+
+  it('Style must be the same as expected even if you use RenderingContext', async () => {
+    ctx = createContext({ rootSelector: '.sample' });
 
     const expectedRootElement = ctx.render(`
     <div class="sample" style="

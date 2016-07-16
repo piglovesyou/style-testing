@@ -3,9 +3,16 @@
   "version": "0.0.1",
   "description": "Style test utilities by means of getComputedStyle",
   "main": "src/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "start": "karma start karma.conf.js"
+    "start": "karma start karma.conf.js",
+    "prepublish": "babel -d lib src"
   },
   "author": "https://github.com/piglovesyou",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.10.1"
+  }
 }

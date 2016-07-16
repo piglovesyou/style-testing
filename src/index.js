@@ -1,33 +1,25 @@
-class RenderingContext {
+const defaultOptions = {
+  rootSelector: 'div',
+  viewportWidth: undefined,
+  viewportHeight: undefined,
+};
+
+export default class RenderingContext {
   constructor(options) {
-    this.options = Object.assign({
-      rootSelector: 'div',
-      viewportWidth: undefined,
-      viewportHeight: undefined,
-    }, options);
+    this.options = Object.assign({}, defaultOptions, options);
     this.frames = [];
   }
 
   render(htmlOrElement) {
-    const frame = renderAndGetFrame.call(this, htmlOrElement);
-    return frame.contentDocument.querySelector(this.options.rootSelector);
+    const [frame, element] = _render(htmlOrElement, this.options);
+    this.frames.push(frame);
+    return element;
   }
 
   async renderWithCSS(htmlOrElement, stylesheets) {
-    const frame = renderAndGetFrame.call(this, htmlOrElement);
-    for (let s of stylesheets) {
-      const linkEl = document.createElement('link');
-      linkEl.rel = 'stylesheet';
-      linkEl.href = s;
-      frame.contentDocument.head.appendChild(linkEl);
-    }
-    await waitForCSSLoad(frame.contentDocument);
-    return frame.contentDocument.querySelector(this.options.rootSelector);
-  }
-
-  promiseStyles(...elements) {
-    return Promise.all(elements.map(waitForCSSLoad))
-      .then(elements => elements.map(computedStyleOf));
+    const [frame, element] = await _renderWithCSS(htmlOrElement, stylesheets, this.options);
+    this.frames.push(frame);
+    return element;
   }
 
   clean() {
@@ -37,21 +29,52 @@ class RenderingContext {
       f.parentNode.removeChild(f);
     }
   }
+}
 
-  static createContext(options) {
-    return new RenderingContext(options);
-  }
+export function createContext(options) {
+  return new RenderingContext(options);
+}
 
-  static computedStyleOf(element) {
-    return computedStyleOf(element);
+export function computedStyleOf(element) {
+  return computedStyleOf(element);
+}
+
+export function render(htmlOrElement, options) {
+  const [_, element] = _render(htmlOrElement, options);
+  return element;
+}
+
+export async function renderWithCSS(htmlOrElement, stylesheets, options) {
+  const [_, element] = await _renderWithCSS(htmlOrElement, stylesheets, options);
+  return element;
+}
+
+function _render(htmlOrElement, options) {
+  options = Object.assign({}, defaultOptions, options);
+  const frame = renderAndGetFrame(htmlOrElement, options);
+  return [frame, frame.contentDocument.querySelector(options.rootSelector)];
+}
+
+async function _renderWithCSS(htmlOrElement, stylesheets, options) {
+  options = Object.assign({}, defaultOptions, options);
+  const frame = renderAndGetFrame(htmlOrElement, options);
+  appendStylesheets(frame, stylesheets);
+  await waitForCSSLoad(frame.contentDocument);
+  return [frame, frame.contentDocument.querySelector(options.rootSelector)]
+}
+
+
+function appendStylesheets(frame, stylesheets) {
+  for (let s of stylesheets) {
+    const linkEl = document.createElement('link');
+    linkEl.rel = 'stylesheet';
+    linkEl.href = s;
+    frame.contentDocument.head.appendChild(linkEl);
   }
 }
 
-module.exports = RenderingContext;
-
-function renderAndGetFrame(htmlOrElement) {
-  const frame = createFrame(this.options);
-  this.frames.push(frame);
+function renderAndGetFrame(htmlOrElement, options) {
+  const frame = createFrame(options);
   if (typeof htmlOrElement === 'string') {
     frame.contentDocument.body.innerHTML = htmlOrElement;
   } else if (htmlOrElement.nodeType === 1) {
