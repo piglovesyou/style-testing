@@ -1,3 +1,5 @@
 node_modules
 *.compiled.css
 .DS_Store
+/lib
+npm-debug*.log
