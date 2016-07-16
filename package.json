@@ -1,6 +1,6 @@
 {
   "name": "style-testing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Style test utilities by means of getComputedStyle",
   "main": "lib/index.js",
   "files": [
