@@ -1,0 +1,11 @@
+{
+  "name": "style-testing",
+  "version": "0.0.1",
+  "description": "Style test utilities by means of getComputedStyle",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "karma start karma.conf.js"
+  },
+  "author": "https://github.com/piglovesyou",
+  "license": "MIT"
+}

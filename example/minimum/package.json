@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "test": "karma start karma.conf.js"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "html-tags": "^1.1.1",
+    "karma": "^1.1.0",
+    "karma-browserify": "^5.0.5",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-cli": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-html2js-preprocessor": "^1.0.0",
+    "karma-less-preprocessor": "^0.3.3",
+    "karma-mocha": "^1.1.1",
+    "mocha": "^2.5.3",
+    "watchify": "^3.7.0"
+  }
+}
