@@ -1,11 +1,14 @@
 {
   "devDependencies": {
+    "babel-loader": "^6.2.4",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
+    "babel-plugin-transform-runtime": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "html-tags": "^1.1.1",
     "karma": "^1.1.0",
+    "karma-babel-preprocessor": "^6.0.1",
     "karma-browserify": "^5.0.5",
     "karma-chrome-launcher": "^1.0.1",
     "karma-cli": "^1.0.1",
@@ -13,7 +16,9 @@
     "karma-html2js-preprocessor": "^1.0.0",
     "karma-less-preprocessor": "^0.3.3",
     "karma-mocha": "^1.1.1",
+    "karma-webpack": "^1.7.0",
     "mocha": "^2.5.3",
+    "style-testing": "0.0.2",
     "watchify": "^3.7.0"
   },
   "scripts": {

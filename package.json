@@ -1,6 +1,6 @@
 {
   "name": "style-testing",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Style test utilities by means of getComputedStyle",
   "main": "lib/index.js",
   "files": [
@@ -15,7 +15,6 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
-    "babel-preset-es2015": "^6.9.0"
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3"
   }
 }

@@ -1,5 +1,5 @@
-import assert from 'assert';
-import {render, renderWithCSS, createContext, computedStyleOf} from '../../..';
+const assert = require('assert');
+const {render, renderWithCSS, createContext, computedStyleOf} = require('../../../lib');
 
 describe('sample component', () => {
   let ctx;
@@ -8,7 +8,7 @@ describe('sample component', () => {
     ctx && ctx.clean();
   });
 
-  it('Style must be the same as expected', async () => {
+  it('Style must be the same as expected', () => {
     const expectedRootElement = render(`
       <div class="sample" style="
         border: 4px pink solid;
@@ -17,15 +17,15 @@ describe('sample component', () => {
         ">baa</div>
       `, {rootSelector: '.sample'});
 
-    const actualRootElement = await renderWithCSS(
-        '<div class="sample">baa</div>', ['base/components/sample.compiled.css'],
-        {rootSelector: '.sample'});
-
-    assert.deepEqual(computedStyleOf(expectedRootElement),
-        computedStyleOf(actualRootElement));
+    renderWithCSS('<div class="sample">baa</div>',
+        ['base/components/sample.compiled.css'], {rootSelector: '.sample'})
+    .then((actualRootElement) => {
+      assert.deepEqual(computedStyleOf(expectedRootElement),
+          computedStyleOf(actualRootElement));
+    });
   });
 
-  it('Style must be the same as expected even if you use RenderingContext', async () => {
+  it('Style must be the same as expected even if you use RenderingContext', () => {
     ctx = createContext({ rootSelector: '.sample' });
 
     const expectedRootElement = ctx.render(`
@@ -36,11 +36,12 @@ describe('sample component', () => {
       ">baa</div>
       `);
 
-    const actualRootElement = await ctx.renderWithCSS(
-        '<div class="sample">baa</div>', ['base/components/sample.compiled.css']);
-
-    assert.deepEqual(computedStyleOf(expectedRootElement),
-        computedStyleOf(actualRootElement));
+    ctx.renderWithCSS('<div class="sample">baa</div>',
+        ['base/components/sample.compiled.css'])
+    .then((actualRootElement) => {
+      assert.deepEqual(computedStyleOf(expectedRootElement),
+          computedStyleOf(actualRootElement));
+    });
   });
 });
 
